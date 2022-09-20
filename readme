@@ -17,3 +17,34 @@ roslaunch baxter_moveit_config baxter_grippers.launch
 terminal 4: 
 rosrun moveit_check test_moveit.py 
 
+For running the pick_and_place code with baxter kinect and right hand camera. 
+
+List the camera:
+rosrun baxter_tools camera_control.py -l
+Opening a robot camera:
+rosrun baxter_tools camera_control.py -o right_hand_camera
+rosrun baxter_tools camera_control.py -o right_hand_camera -r 1280x800 (make sure to open your right hand camera with this resolution before you start pick and place)
+
+
+
+In all terminals, 
+ - go to catkin ws (workspace), source devel
+ . baxter.sh 
+
+
+terminal 1:
+roslaunch kinect2_bridge kinect2_bridge.launch publish_tf:=true depth_registration:=true
+terminal 2:
+roslaunch moveit_check baxter_base_trans.launch
+terminal 3:
+roslaunch ar_track_alvar pr2_indiv.launch
+terminal 4:
+rosrun baxter_interface joint_trajectory_action_server.py
+terminal 5:
+roslaunch baxter_moveit_config baxter_grippers.launch
+terminal 6:
+roslaunch moveit_check object_position_server.launch
+terminal 7:
+rosrun moveit_check test_moveit_tea_sandwich_scenario.py (For tea-table scenario)
+rosrun moveit_check test_moveit_table_top_assemble_scenario.py (For table assembler scenario) 
+
